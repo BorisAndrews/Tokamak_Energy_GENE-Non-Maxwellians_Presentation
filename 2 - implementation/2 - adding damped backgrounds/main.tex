@@ -1,0 +1,145 @@
+\subsection{Adding Damped Backgrounds}
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        .{\bf WHAT DISTRIBUTIONS TO CONSIDER...}
+        
+        Tried to be as general here as possible:
+        \begin{itemize}
+            \item  Consider arbitrary ``damping'' as a map on particle speeds
+            \begin{equation}
+                (v_{\parallel}, \mu)^{\sf pre}  \mapsto  (v_{\parallel}, \mu)^{\sf post}
+            \end{equation}
+
+            \item  Equivalently maps distribution \emph{before} damping, $f_{s0}^{\sf pre}$, to distribution \emph{after} damping, $f_{s0}^{\sf post}$
+            \begin{align}
+                f_{s0}^{\sf post}\left(v_{\parallel}^{\sf post}, \mu^{\sf post}\right)  &=  J\left(v_{\parallel}^{\post}, \mu^{\post}\right)f_{s0}^{\sf pre}\left(v_{\parallel}^{pre}, \mu^{\sf pre}\right)  \\
+                J  &=  \partial_{v_{\parallel}^{\sf post}}v_{\parallel}^{\sf pre}\partial_{\mu^{\sf post}}\mu^{\sf pre} - \partial_{\mu^{\sf post}}v_{\parallel}^{\sf pre}\partial_{v_{\parallel}^{\sf post}}\mu^{\sf pre}
+            \end{align}
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{example}
+            \begin{equation}
+                v^{\sf pre}  =  \left[1 + \left(\frac{v^{\sf post}}{v^{\sf damp}}\right)^{k}\right]v^{\sf post}
+            \end{equation}
+        \end{example}
+        
+        As $v  \rightarrow  \infty$:
+        \begin{align}
+            f_{s0}^{\sf pre}  &=  \exp\left(- {\sf const.}v^{2}\right)  \\
+            f_{s0}^{\sf post}  &=  \exp\left(- {\sf const.}v^{2 + k}\right)
+        \end{align}
+    \end{frame}
+
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{itemize}
+            \item  Example such damping function
+        \end{itemize}
+        \begin{figure}
+            \centering
+            \includegraphics[width = 0.5\textwidth]{2 - implementation/2 - adding damped backgrounds/images/example damping function.png}
+            \caption{$v^{\sf damp} = 1.5$, $k = 20$}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{itemize}
+            \item  Damped velocity distribution
+        \end{itemize}
+        \begin{figure}
+            \centering
+            \includegraphics[width = 0.6\textwidth]{2 - implementation/2 - adding damped backgrounds/images/example velocity distribution.png}
+            \caption{$v^{\sf damp} = 1.5$, $k = 20$, $u = 0$, $T = 0.48$}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{itemize}
+            \item  Damped energy distribution
+        \end{itemize}
+        \begin{figure}
+            \centering
+            \includegraphics[width = 0.6\textwidth]{2 - implementation/2 - adding damped backgrounds/images/example energy distribution.png}
+            \caption{$v^{\sf damp} = 1.5$, $k = 20$, $u = 0$, $T = 0.48$}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Background and Motivation}    
+        \begin{figure}
+            \centering
+            \includegraphics[width = 0.65\textwidth]{1 - background and motivation/images/Experimental Damped Distributions.png}
+            \caption{Energy density profiles (on different flux tubes) showing the damping of (alpha) particles over a certain threshold energy(/velocity)}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{itemize}
+            \item  Damped \emph{shifted} velocity distribution
+        \end{itemize}
+        \begin{figure}
+            \centering
+            \includegraphics[width = 0.4\textwidth]{2 - implementation/2 - adding damped backgrounds/images/example shifted velocity distribution.png}
+            \caption{$v^{\sf damp} = 1.5$, $k = 20$, $u = 1.2$, $T = 0.04$}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{itemize}
+            \item  Damped \emph{shifted} energy distribution
+        \end{itemize}
+        \begin{figure}
+            \centering
+            \includegraphics[width = 0.4\textwidth]{2 - implementation/2 - adding damped backgrounds/images/example shifted energy distribution.png}
+            \caption{$v^{\sf damp} = 1.5$, $k = 20$, $u = 1.2$, $T = 0.04$}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \vspace{4mm}
+        .{\bf HOW DO WE IMPLEMENT THIS IN FULL GENERALITY?}  \pause
+        \vspace{2mm}
+        
+        \input{2 - implementation/2 - adding damped backgrounds/tikz/class diagram 1.tex}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \begin{itemize}
+            \item  What kind of functionals does the {\tt dist\_eq\_*\_damped\_t} class instance need to evaluate?
+            \begin{center}\begin{tabular}{ c | c }
+                Procedure  &  Functional  \\
+                \hline\hline
+                {\tt get\_*D\_dv}  &  $\partial_{v_{\parallel}}f_{s0}$  \\
+                \hline
+                {\tt get\_*D\_dm}  &  $\partial_{\mu}f_{s0}$  \\
+                \hline
+                {\tt get\_*D\_dvdm}  &  $\frac{B_{0}}{2}\partial_{v_{\parallel}}f_{s0} - v_{\parallel}\partial_{\mu}f_{s0}$  \\
+                \hline
+                \vdots  &  \vdots  \\
+            \end{tabular}\end{center}  \pause
+
+            \item  Needs access to:
+            \begin{itemize}
+                \item  $v_{\parallel}^{\sf pre}$, $\mu^{\sf pre}$ (and their derivatives up to 2nd order)
+                \item  $J$ (and its derivative up to 1st order)
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        \vspace{2mm}
+        \input{2 - implementation/2 - adding damped backgrounds/tikz/class diagram 2.tex}
+    \end{frame}
+    
+    \begin{frame}{Implementation | Adding Damped Distribution}
+        .{\bf CODE NOW AVAILABLE!}
+        In my Gitlab repository:
+        \begin{itemize}
+            \item  Just ask me for access! :)
+            \item  \underline{https://gitlab.mpcdf.mpg.de/g-borisandrews/gene-gpu}
+            \begin{center}
+                \includegraphics[width = 0.3\textwidth]{2 - implementation/2 - adding damped backgrounds/images/QR.png}
+            \end{center}
+            \item  Also have a far more detailed report to which Salomon should have access
+        \end{itemize}
+    \end{frame}
+    

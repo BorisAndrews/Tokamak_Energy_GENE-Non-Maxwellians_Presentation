@@ -1,0 +1,133 @@
+%% John Papadopoulos' take on the Oxford Beamer template
+\PassOptionsToPackage{table}{xcolor}
+\usepackage{charter}
+\usepackage{amsthm, amsmath,amssymb,bm}
+\usepackage{booktabs,array,ragged2e}
+\usepackage{anyfontsize, pgfbaselayers, url, graphicx, array, varwidth, geometry, esint, listings, fancyhdr, subfig}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\usepackage{tikz}
+\usetikzlibrary[trees,positioning,arrows,decorations.pathmorphing,backgrounds,fit,calc]
+
+%%% - For code input
+\usepackage{xcolor}
+\definecolor{sbgreen}{HTML}{056F2F}
+\definecolor{sbred}{HTML}{B60C28}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\tiny,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    %numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+%%% - end of code input
+
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\vectt}[1]{\boldsymbol{\mathbf{#1}}}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\usetheme{Madrid}
+\setbeamertemplate{enumerate items}[default]
+
+\newcommand{\cmark}{{\color{sbgreen}\ding{51}}}%
+\newcommand{\xmark}{{\color{sbred}\ding{55}}}%
+\captionsetup[subfigure]{labelformat=empty}
+
+% Title slide formatting %%
+\pgfdeclareimage[width=1.05\paperwidth]{titlebackground}{template/images/title-slide-background.png}
+\setbeamerfont{subtitle}{size=\scriptsize}
+\setbeamertemplate{title page}{
+    \begin{picture}(0,0)
+        \put(-12,-165){%
+            \pgfuseimage{titlebackground}
+        }
+        \put(0,-75){%
+            \begin{minipage}[b][4.5cm][t]{0.82\textwidth}
+                \color{white}
+                \usebeamerfont{title}
+                    {\inserttitle\\[0.9cm]}
+                \usebeamerfont{subtitle}
+                    {\insertauthor\par}
+                    {\insertinstitute\\[0.3cm]}
+                    {\insertdate}
+            \end{minipage}
+        }
+    \end{picture}
+}
+
+
+
+%% General slide formatting %%
+
+% \definecolor{oxfordblue}{RGB}{4,30,66}
+\definecolor{oxfordblue}{RGB}{0,33,71}
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\setbeamercolor{structure}{fg=oxfordblue}
+
+\pgfdeclareimage[width=1cm]{oxfordlogo}{template/images/oxford-logo.png}
+\pgfdeclareimage[width=1cm]{mathslogo}{template/images/mathematics-logo.png}
+
+
+\setbeamertemplate{frametitle}
+{%
+    \nointerlineskip
+    \begin{beamercolorbox}[sep=0.3cm,ht=2.4em,wd=\paperwidth]{frametitle}
+    \end{beamercolorbox}
+    
+    \begin{picture}(0,0)
+        \put(5,33){%
+            \normalsize\color{white}\insertframetitle
+        }
+        \put(5,23){%
+            \scriptsize\color{white}\insertframesubtitle
+        }
+        \end{picture}
+       
+       \vspace{-1.5mm}
+       \begin{picture}(0,0)
+        \put(315,34){%
+        \pgfuseimage{oxfordlogo}
+        }
+    \end{picture}
+      
+    \vspace{-19mm}
+}
+
+\setbeamertemplate{footline}
+{%
+    \begin{picture}(0,0)
+        \put(-20,25){%
+            \rule{400pt}{0.4pt}
+        }
+        \put(20,12){%
+            \pgfuseimage{mathslogo}
+        }
+        \put(100,14){%
+            \color{oxfordblue}\insertshortdate
+        }
+        \put(160,14){%
+            \color{oxfordblue}\insertshorttitle
+        }
+        \put(337,14){%
+            \color{oxfordblue}\insertframenumber
+        }
+    \end{picture}%
+}

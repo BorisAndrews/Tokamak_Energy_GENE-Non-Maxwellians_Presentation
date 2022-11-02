@@ -1,0 +1,18 @@
+# Personal additions...
+
+# TeX miscellanea
+*.bcf
+*.synctex.gz
+*.synctex(busy)
+*.xml
+*.log
+#*.pdf
+
+# TeX trash
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.toc
